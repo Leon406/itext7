@@ -1,76 +1,51 @@
 package me.leon;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+import static me.leon.SignPDF.KEYSTORE;
+import static me.leon.SignPDF.TEST;
 
 public class Encoding {
-    public static String getEncoding(String str) {
-        String encode;
 
-        encode = "UTF-16";
-        try {
-            if (str.equals(new String(str.getBytes(), encode))) {
-                return encode;
-            }
-        } catch (Exception ex) {
-        }
+    public static final String[] ENCODING_LIST = {"UTF-16", "UTF-8", "ASCII", "ISO-8859-1", "GBK", "UNICODE", "BIG5", "UTF-16BE", "UTF-16LE"};
+    private static Charset ISO_8859_1, GBK;
 
-        encode = "ASCII";
-        try {
-            if (str.equals(new String(str.getBytes(), encode))) {
-                return "字符" + str + " >>中仅由数字和英文字母组成，无法识别其编码格式";
-            }
-        } catch (Exception ex) {
-        }
+    public static String detectEncoding(String str) {
 
-        encode = "ISO-8859-1";
-        try {
-            if (str.equals(new String(str.getBytes(), encode))) {
-                return encode;
+        for (String encode : ENCODING_LIST) {
+            try {
+                if (str.equals(new String(str.getBytes(), encode))) {
+                    return encode;
+                }
+            } catch (Exception ex) {
             }
-        } catch (Exception ex) {
-        }
-
-        encode = "GBK";
-        try {
-            if (str.equals(new String(str.getBytes(), encode))) {
-                return encode;
-            }
-        } catch (Exception ex) {
-        }
-
-        encode = "GB2312";
-        try {
-            if (str.equals(new String(str.getBytes(), encode))) {
-                return encode;
-            }
-        } catch (Exception ex) {
-        }
-
-        encode = "UTF-8";
-        try {
-            if (str.equals(new String(str.getBytes(), encode))) {
-                return encode;
-            }
-        } catch (Exception ex) {
         }
 
         return "unknown";
     }
+
     /**
      * 字符串转换unicode
+     *
      * @param string
      * @return
      */
     public static String stringToUnicode(String string) {
         StringBuffer unicode = new StringBuffer();
         for (int i = 0; i < string.length(); i++) {
-            unicode.append("\\u" +Integer.toHexString(string.charAt(i)));
+            unicode.append("\\u" + Integer.toHexString(string.charAt(i)));
         }
         return unicode.toString();
     }
 
     /**
      * unicode 转字符串
+     *
      * @param unicode
      * @return
      */
@@ -91,10 +66,26 @@ public class Encoding {
         System.out.println("系统默认语言" + System.getProperty("user.language")); //查询结果zh
 
         String s1 = "hi, nice to meet you!";
-        String s2 = "hi, 我来了！";
-        System.out.println(getEncoding(s1));
-        System.out.println(getEncoding(s2));
-        System.out.println(stringToUnicode(s2));
-        System.out.println(unicodeToString(stringToUnicode(s2)));
+        String s2 = "淘！我喜欢！";
+        ISO_8859_1 = Charset.forName("ISO-8859-1");
+        GBK = Charset.forName("GBK");
+        System.out.println("编码: " + Arrays.toString(s2.getBytes(ISO_8859_1)));
+        System.out.println("解码: " + new String(s2.getBytes(ISO_8859_1)));
+
+        System.out.println("编码: " + Arrays.toString(s2.getBytes(GBK)));
+        System.out.println("解码: " + new String(s2.getBytes(GBK), GBK));
+
+        System.out.println("编码1: " + Arrays.toString(s2.getBytes(GBK)));
+        System.out.println("解码1: " + new String(s2.getBytes(GBK), ISO_8859_1));
+        System.out.println("编码2: " + Arrays.toString((new String(s2.getBytes(GBK), ISO_8859_1).getBytes(ISO_8859_1))));
+        System.out.println("解码2: " + new String(new String(s2.getBytes(GBK), ISO_8859_1).getBytes(ISO_8859_1),GBK));
+
+        String s3 = new String(s2.getBytes());
+        System.out.println(s3);
+//        System.out.println(detectEncoding(s1));
+//        System.out.println(detectEncoding(s2));
+        System.out.println(detectEncoding(s3));
+//        System.out.println(stringToUnicode(s2));
+//        System.out.println(unicodeToString(stringToUnicode(s2)));
     }
 }
