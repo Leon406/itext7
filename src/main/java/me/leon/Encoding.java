@@ -56,6 +56,32 @@ public class Encoding {
 
         return "unknown";
     }
+    /**
+     * 字符串转换unicode
+     * @param string
+     * @return
+     */
+    public static String stringToUnicode(String string) {
+        StringBuffer unicode = new StringBuffer();
+        for (int i = 0; i < string.length(); i++) {
+            unicode.append("\\u" +Integer.toHexString(string.charAt(i)));
+        }
+        return unicode.toString();
+    }
+
+    /**
+     * unicode 转字符串
+     * @param unicode
+     * @return
+     */
+    public static String unicodeToString(String unicode) {
+        StringBuilder string = new StringBuilder();
+        String[] hex = unicode.split("\\\\u");
+        for (int i = 1; i < hex.length; i++) {
+            string.append((char) Integer.parseInt(hex[i], 16));
+        }
+        return string.toString();
+    }
 
     public static void main(String[] args) {
         //获取系统默认编码
@@ -68,5 +94,7 @@ public class Encoding {
         String s2 = "hi, 我来了！";
         System.out.println(getEncoding(s1));
         System.out.println(getEncoding(s2));
+        System.out.println(stringToUnicode(s2));
+        System.out.println(unicodeToString(stringToUnicode(s2)));
     }
 }
