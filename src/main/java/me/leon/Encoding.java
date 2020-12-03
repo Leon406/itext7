@@ -1,14 +1,7 @@
 package me.leon;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-
-import static me.leon.SignPDF.KEYSTORE;
-import static me.leon.SignPDF.TEST;
 
 public class Encoding {
 
