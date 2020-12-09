@@ -52,24 +52,6 @@ public class SignPDF {
     public static final String stamperSrc = ROOT + "\\leon2.png";//印章路径
     public static final String stamperSrc2 = ROOT + "\\signature2.png";//印章路径
 
-    /**
-     * @param string
-     * @return
-     * @Title: unicodeEncode
-     * @Description: unicode编码
-     */
-    public static String unicodeEncode(String string) {
-        char[] utfBytes = string.toCharArray();
-        String unicodeBytes = "";
-        for (int i = 0; i < utfBytes.length; i++) {
-            String hexB = Integer.toHexString(utfBytes[i]);
-            if (hexB.length() <= 2) {
-                hexB = "00" + hexB;
-            }
-            unicodeBytes = unicodeBytes + "\\u" + hexB;
-        }
-        return unicodeBytes;
-    }
 
     private Map<String, Rectangle> sigRects = new HashMap<>(8);
     private List<RegexBasedLocationExtractionStrategy> parsers = new ArrayList<>();
@@ -196,7 +178,6 @@ public class SignPDF {
 
     public static void main(String[] args) {
         try {
-
             // 读取keystore ，获得私钥和证书链 jks
             KeyStore ks = KeyStore.getInstance("JKS");
             ks.load(new FileInputStream(KEYSTORE), PASSWORD);

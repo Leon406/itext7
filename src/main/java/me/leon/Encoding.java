@@ -1,5 +1,7 @@
 package me.leon;
 
+import com.google.common.io.Resources;
+
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -52,6 +54,8 @@ public class Encoding {
     }
 
     public static void main(String[] args) {
+
+
         //获取系统默认编码
         System.out.println("系统默认编码" + System.getProperty("file.encoding")); //查询结果GBK
         //系统默认字符编码
