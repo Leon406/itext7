@@ -53,9 +53,7 @@ public class PdfTemplate {
             field.setValue(stringObjectEntry.getValue());
         }
 
-
         form.flattenFields();
         pdfDoc.close();
-
     }
 }
