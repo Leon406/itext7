@@ -40,23 +40,23 @@ public class SignPDF {
 
     public static final String ROOT = "E:\\gitrepo\\itext7\\src\\main\\resources";
 
-    public static final String KEYSTORE = ROOT + "\\yuanzong.jks";//keystoreÎÄ¼şÂ·¾¶
-    public static final String TEST = ROOT + "\\test.txt";//keystoreÎÄ¼şÂ·¾¶
-    public static final char[] PASSWORD = "yuanzong2016".toCharArray();    // keystoreÃÜÂë
+    public static final String KEYSTORE = ROOT + "\\yuanzong.jks";//keystoreæ–‡ä»¶è·¯å¾„
+    public static final String TEST = ROOT + "\\test.txt";//keystoreæ–‡ä»¶è·¯å¾„
+    public static final char[] PASSWORD = "yuanzong2016".toCharArray();    // keystoreå¯†ç 
 
     //    public static final String SRC = ROOT + "\\contract.pdf";
     public static final String SRC = ROOT + "\\111.pdf";
 
     public static final String DEST = ROOT + "\\contract2.pdf";
     public static final String DEST_TMP = ROOT + "\\tmp.pdf";
-    public static final String stamperSrc = ROOT + "\\leon2.png";//Ó¡ÕÂÂ·¾¶
-    public static final String stamperSrc2 = ROOT + "\\signature2.png";//Ó¡ÕÂÂ·¾¶
+    public static final String stamperSrc = ROOT + "\\leon2.png";//å°ç« è·¯å¾„
+    public static final String stamperSrc2 = ROOT + "\\signature2.png";//å°ç« è·¯å¾„
 
     /**
      * @param string
      * @return
      * @Title: unicodeEncode
-     * @Description: unicode±àÂë
+     * @Description: unicodeç¼–ç 
      */
     public static String unicodeEncode(String string) {
         char[] utfBytes = string.toCharArray();
@@ -74,17 +74,17 @@ public class SignPDF {
     private Map<String, Rectangle> sigRects = new HashMap<>(8);
     private List<RegexBasedLocationExtractionStrategy> parsers = new ArrayList<>();
 
-    public void sign(String src  //ĞèÒªÇ©ÕÂµÄpdfÎÄ¼şÂ·¾¶
-            , String dest  // Ç©ÍêÕÂµÄpdfÎÄ¼şÂ·¾¶
-            , Certificate[] chain //Ö¤Êé
-            , PrivateKey pk //Ç©ÃûË½Ô¿
-            , String digestAlgorithm  //ÕªÒªËã·¨Ãû³Æ£¬ÀıÈçSHA-1
-            , String provider  // ÃÜÔ¿Ëã·¨Ìá¹©Õß£¬¿ÉÒÔÎªnull
-            , CryptoStandard subfilter //Êı×ÖÇ©Ãû¸ñÊ½
-            , String reason  //Ç©ÃûµÄÔ­Òò£¬ÏÔÊ¾ÔÚpdfÇ©ÃûÊôĞÔÖĞ£¬Ëæ±ãÌî
-            , String location) //Ç©ÃûµÄµØµã£¬ÏÔÊ¾ÔÚpdfÇ©ÃûÊôĞÔ£¬Ëæ±ãÌî
+    public void sign(String src  //éœ€è¦ç­¾ç« çš„pdfæ–‡ä»¶è·¯å¾„
+            , String dest  // ç­¾å®Œç« çš„pdfæ–‡ä»¶è·¯å¾„
+            , Certificate[] chain //è¯ä¹¦
+            , PrivateKey pk //ç­¾åç§é’¥
+            , String digestAlgorithm  //æ‘˜è¦ç®—æ³•åç§°ï¼Œä¾‹å¦‚SHA-1
+            , String provider  // å¯†é’¥ç®—æ³•æä¾›è€…ï¼Œå¯ä»¥ä¸ºnull
+            , CryptoStandard subfilter //æ•°å­—ç­¾åæ ¼å¼
+            , String reason  //ç­¾åçš„åŸå› ï¼Œæ˜¾ç¤ºåœ¨pdfç­¾åå±æ€§ä¸­ï¼Œéšä¾¿å¡«
+            , String location) //ç­¾åçš„åœ°ç‚¹ï¼Œæ˜¾ç¤ºåœ¨pdfç­¾åå±æ€§ï¼Œéšä¾¿å¡«
             throws GeneralSecurityException, IOException {
-        //ÏÂ±ßµÄ²½Öè¶¼ÊÇ¹Ì¶¨µÄ£¬ÕÕ×ÅĞ´¾ÍĞĞÁË£¬Ã»É¶Òª½âÊÍµÄ
+        //ä¸‹è¾¹çš„æ­¥éª¤éƒ½æ˜¯å›ºå®šçš„ï¼Œç…§ç€å†™å°±è¡Œäº†ï¼Œæ²¡å•¥è¦è§£é‡Šçš„
         PdfReader reader = new PdfReader(src);
 
         PdfDocument document = new PdfDocument(reader);
@@ -118,20 +118,20 @@ public class SignPDF {
 
 
         PdfReader reader2 = new PdfReader(src);
-//        Ä¿±êÎÄ¼şÊä³öÁ÷
+//        ç›®æ ‡æ–‡ä»¶è¾“å‡ºæµ
         FileOutputStream os = new FileOutputStream(DEST_TMP);
-        //´´½¨Ç©ÕÂ¹¤¾ßPdfSigner £¬×îºóÒ»¸öboolean²ÎÊı
-        //falseµÄ»°£¬pdfÎÄ¼şÖ»ÔÊĞí±»Ç©ÃûÒ»´Î£¬¶à´ÎÇ©Ãû£¬×îºóÒ»´ÎÓĞĞ§
-        //trueµÄ»°£¬pdf¿ÉÒÔ±»×·¼ÓÇ©Ãû£¬ÑéÇ©¹¤¾ß¿ÉÒÔÊ¶±ğ³öÃ¿´ÎÇ©ÃûÖ®ºóÎÄµµÊÇ·ñ±»ĞŞ¸Ä
+        //åˆ›å»ºç­¾ç« å·¥å…·PdfSigner ï¼Œæœ€åä¸€ä¸ªbooleanå‚æ•°
+        //falseçš„è¯ï¼Œpdfæ–‡ä»¶åªå…è®¸è¢«ç­¾åä¸€æ¬¡ï¼Œå¤šæ¬¡ç­¾åï¼Œæœ€åä¸€æ¬¡æœ‰æ•ˆ
+        //trueçš„è¯ï¼Œpdfå¯ä»¥è¢«è¿½åŠ ç­¾åï¼ŒéªŒç­¾å·¥å…·å¯ä»¥è¯†åˆ«å‡ºæ¯æ¬¡ç­¾åä¹‹åæ–‡æ¡£æ˜¯å¦è¢«ä¿®æ”¹
         PdfSigner stamper = new PdfSigner(reader2, os, true);
 
-        // »ñÈ¡Êı×ÖÇ©ÕÂÊôĞÔ¶ÔÏó£¬Éè¶¨Êı×ÖÇ©ÕÂµÄÊôĞÔ
+        // è·å–æ•°å­—ç­¾ç« å±æ€§å¯¹è±¡ï¼Œè®¾å®šæ•°å­—ç­¾ç« çš„å±æ€§
         PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
         appearance.setReason(reason);
         appearance.setLocation(location);
 
         ImageData img = ImageDataFactory.create(stamperSrc);
-        //¶ÁÈ¡Í¼ÕÂÍ¼Æ¬£¬Õâ¸öimageÊÇitext°üµÄimage
+        //è¯»å–å›¾ç« å›¾ç‰‡ï¼Œè¿™ä¸ªimageæ˜¯itextåŒ…çš„image
         Image image = new Image(img);
 
         float height = image.getImageHeight();
@@ -139,24 +139,24 @@ public class SignPDF {
         float scale = getProperScale(height, width, 100f, 40f);
 
 
-        //ÉèÖÃÇ©ÃûµÄÎ»ÖÃ£¬Ò³Âë£¬Ç©ÃûÓòÃû³Æ£¬¶à´Î×·¼ÓÇ©ÃûµÄÊ±ºò£¬Ç©ÃûÓëÃû³Æ²»ÄÜÒ»Ñù
-        //Ç©ÃûµÄÎ»ÖÃ£¬ÊÇÍ¼ÕÂÏà¶ÔÓÚpdfÒ³ÃæµÄÎ»ÖÃ×ø±ê£¬Ô­µãÎªpdfÒ³Ãæ×óÏÂ½Ç
-        //ËÄ¸ö²ÎÊıµÄ·Ö±ğÊÇ£¬Í¼ÕÂ×óÏÂ½Çx£¬Í¼ÕÂ×óÏÂ½Çy£¬Í¼ÕÂ¿í¶È£¬Í¼ÕÂ¸ß¶È   A4´óĞ¡ 595 842
+        //è®¾ç½®ç­¾åçš„ä½ç½®ï¼Œé¡µç ï¼Œç­¾ååŸŸåç§°ï¼Œå¤šæ¬¡è¿½åŠ ç­¾åçš„æ—¶å€™ï¼Œç­¾åä¸åç§°ä¸èƒ½ä¸€æ ·
+        //ç­¾åçš„ä½ç½®ï¼Œæ˜¯å›¾ç« ç›¸å¯¹äºpdfé¡µé¢çš„ä½ç½®åæ ‡ï¼ŒåŸç‚¹ä¸ºpdfé¡µé¢å·¦ä¸‹è§’
+        //å››ä¸ªå‚æ•°çš„åˆ†åˆ«æ˜¯ï¼Œå›¾ç« å·¦ä¸‹è§’xï¼Œå›¾ç« å·¦ä¸‹è§’yï¼Œå›¾ç« å®½åº¦ï¼Œå›¾ç« é«˜åº¦   A4å¤§å° 595 842
         appearance.setPageNumber(2);
 //        appearance.setPageRect(new Rectangle(445, 519, width / scale, height / scale));
         appearance.setPageRect(new Rectangle(rectangle.getX(), rectangle.getY(), width / scale, height / scale));
-        //²åÈë¸ÇÕÂÍ¼Æ¬
+        //æ’å…¥ç›–ç« å›¾ç‰‡
         appearance.setSignatureGraphic(img);
-        //ÉèÖÃÍ¼ÕÂµÄÏÔÊ¾·½Ê½£¬ÈçÏÂÑ¡ÔñµÄÊÇÖ»ÏÔÊ¾Í¼ÕÂ£¨»¹ÓĞÆäËûµÄÄ£Ê½£¬¿ÉÒÔÍ¼ÕÂºÍÇ©ÃûÃèÊöÒ»Í¬ÏÔÊ¾£©
+        //è®¾ç½®å›¾ç« çš„æ˜¾ç¤ºæ–¹å¼ï¼Œå¦‚ä¸‹é€‰æ‹©çš„æ˜¯åªæ˜¾ç¤ºå›¾ç« ï¼ˆè¿˜æœ‰å…¶ä»–çš„æ¨¡å¼ï¼Œå¯ä»¥å›¾ç« å’Œç­¾åæè¿°ä¸€åŒæ˜¾ç¤ºï¼‰
         appearance.setRenderingMode(RenderingMode.GRAPHIC);
 
 
-        // ÕâÀïµÄitextÌá¹©ÁË2¸öÓÃÓÚÇ©ÃûµÄ½Ó¿Ú£¬¿ÉÒÔ×Ô¼ºÊµÏÖ£¬ºó±ß×ÅÖØËµÕâ¸öÊµÏÖ
-        // ÕªÒªËã·¨
+        // è¿™é‡Œçš„itextæä¾›äº†2ä¸ªç”¨äºç­¾åçš„æ¥å£ï¼Œå¯ä»¥è‡ªå·±å®ç°ï¼Œåè¾¹ç€é‡è¯´è¿™ä¸ªå®ç°
+        // æ‘˜è¦ç®—æ³•
         IExternalDigest digest = new BouncyCastleDigest();
-        // Ç©ÃûËã·¨
+        // ç­¾åç®—æ³•
         IExternalSignature signature = new PrivateKeySignature(pk, digestAlgorithm, BouncyCastleProvider.PROVIDER_NAME);
-        // µ÷ÓÃitextÇ©Ãû·½·¨Íê³ÉpdfÇ©ÕÂ
+        // è°ƒç”¨itextç­¾åæ–¹æ³•å®Œæˆpdfç­¾ç« 
         stamper.setCertificationLevel(1);
         stamper.signDetached(digest, signature, chain, null, null, null, 0, PdfSigner.CryptoStandard.CADES);
 
@@ -164,13 +164,13 @@ public class SignPDF {
         reader2 = new PdfReader(DEST_TMP);
         os = new FileOutputStream(dest);
         stamper = new PdfSigner(reader2, os, true);
-        // »ñÈ¡Êı×ÖÇ©ÕÂÊôĞÔ¶ÔÏó£¬Éè¶¨Êı×ÖÇ©ÕÂµÄÊôĞÔ
+        // è·å–æ•°å­—ç­¾ç« å±æ€§å¯¹è±¡ï¼Œè®¾å®šæ•°å­—ç­¾ç« çš„å±æ€§
         appearance = stamper.getSignatureAppearance();
         appearance.setReason(reason);
         appearance.setLocation(location);
 
         ImageData img2 = ImageDataFactory.create(stamperSrc2);
-        //¶ÁÈ¡Í¼ÕÂÍ¼Æ¬£¬Õâ¸öimageÊÇitext°üµÄimage
+        //è¯»å–å›¾ç« å›¾ç‰‡ï¼Œè¿™ä¸ªimageæ˜¯itextåŒ…çš„image
         Image image2 = new Image(img2);
 
         float height2 = image2.getImageHeight();
@@ -178,9 +178,9 @@ public class SignPDF {
         float scale2 = getProperScale(height2, width2, 100f, 40f);
         appearance.setPageNumber(2);
         appearance.setPageRect(new Rectangle(345, 519, width2 / scale2, height2 / scale2));
-        //²åÈë¸ÇÕÂÍ¼Æ¬
+        //æ’å…¥ç›–ç« å›¾ç‰‡
         appearance.setSignatureGraphic(img);
-        //ÉèÖÃÍ¼ÕÂµÄÏÔÊ¾·½Ê½£¬ÈçÏÂÑ¡ÔñµÄÊÇÖ»ÏÔÊ¾Í¼ÕÂ£¨»¹ÓĞÆäËûµÄÄ£Ê½£¬¿ÉÒÔÍ¼ÕÂºÍÇ©ÃûÃèÊöÒ»Í¬ÏÔÊ¾£©
+        //è®¾ç½®å›¾ç« çš„æ˜¾ç¤ºæ–¹å¼ï¼Œå¦‚ä¸‹é€‰æ‹©çš„æ˜¯åªæ˜¾ç¤ºå›¾ç« ï¼ˆè¿˜æœ‰å…¶ä»–çš„æ¨¡å¼ï¼Œå¯ä»¥å›¾ç« å’Œç­¾åæè¿°ä¸€åŒæ˜¾ç¤ºï¼‰
         appearance.setRenderingMode(RenderingMode.GRAPHIC);
         stamper.setCertificationLevel(1);
         stamper.signDetached(digest, signature, chain, null, null, null, 0, PdfSigner.CryptoStandard.CADES);
@@ -197,13 +197,13 @@ public class SignPDF {
     public static void main(String[] args) {
         try {
 
-            // ¶ÁÈ¡keystore £¬»ñµÃË½Ô¿ºÍÖ¤ÊéÁ´ jks
+            // è¯»å–keystore ï¼Œè·å¾—ç§é’¥å’Œè¯ä¹¦é“¾ jks
             KeyStore ks = KeyStore.getInstance("JKS");
             ks.load(new FileInputStream(KEYSTORE), PASSWORD);
             String alias = ks.aliases().nextElement();
             PrivateKey pk = (PrivateKey) ks.getKey(alias, PASSWORD);
             Certificate[] chain = ks.getCertificateChain(alias);
-            // newÒ»¸öÉÏ±ß×Ô¶¨ÒåµÄ·½·¨¶ÔÏó£¬µ÷ÓÃÇ©Ãû·½·¨
+            // newä¸€ä¸ªä¸Šè¾¹è‡ªå®šä¹‰çš„æ–¹æ³•å¯¹è±¡ï¼Œè°ƒç”¨ç­¾åæ–¹æ³•
             SignPDF app = new SignPDF();
             app.sign(SRC, String.format(DEST, 1), chain, pk, DigestAlgorithms.SHA256, null, CryptoStandard.CADES, "Test 1",
                     "Ghent");
