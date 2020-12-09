@@ -2,8 +2,8 @@ package me.leon;
 
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
-import com.itextpdf.io.LogMessageConstant;
-import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -11,6 +11,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.*;
 
 import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +19,13 @@ import static me.leon.SignPDF.ROOT;
 
 public class PdfTemplate {
     public static void main(String[] args) throws Exception {
+
+        URL resource = Thread.currentThread().getContextClassLoader().getResource("fonts");
+        System.out.println(resource.getPath());
         Map<String, String> keys = new HashMap<>();
         keys.put("assistDamage", "0");
         keys.put("dependentsDamage", "0");
-        keys.put("disabilityDamage", "0");
+        keys.put("disabilityDamage", "ddd单独的ddd");
         keys.put("identifyDamage", "0");
         keys.put("medicalDamage", "0");
         keys.put("moralDamage", "0");
@@ -39,7 +43,6 @@ public class PdfTemplate {
         File file = new File(ROOT + "/template_out.pdf");
         FileOutputStream fos = new FileOutputStream(file);
 
-
         itext7(keys, is, fos);
 //        itext5(keys, is, fos);
     }
@@ -54,7 +57,7 @@ public class PdfTemplate {
         PdfStamper stamp = new PdfStamper(reader, baos);
         AcroFields acroFields = stamp.getAcroFields();
         // 创建字体
-        BaseFont bf =BaseFont.createFont("STSong-Light","UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+        BaseFont bf = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
         acroFields.addSubstitutionFont(bf);
         setField(acroFields, keys);
         // 如果为false那么生成的PDF文件还能编辑，一定要设为true
@@ -98,14 +101,16 @@ public class PdfTemplate {
         PdfDocument pdfDoc = new PdfDocument(reader, new PdfWriter(fileOutputStream));
         PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDoc, true);
         Map<String, PdfFormField> fields = form.getFormFields();
-
-
+//        String font = ROOT +"/fonts/msyh.ttc";
+//        PdfFont f2 = PdfFontFactory.createFont(font + ",0", PdfEncodings.IDENTITY_H, true);
+        PdfFont f2 = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
         for (Map.Entry<String, String> stringObjectEntry : keys.entrySet()) {
             PdfFormField field;
             field = fields.get(stringObjectEntry.getKey());
             if (field == null) {
                 continue;
             }
+            field.setFont(f2);
             field.setJustification(PdfFormField.ALIGN_CENTER);
             field.setValue(stringObjectEntry.getValue());
         }

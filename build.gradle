@@ -13,6 +13,13 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+task cpRes(type: Copy) {
+    from sourceSets.main.resources
+    into sourceSets.main.java.outputDir
+    processResources.exclude("**/**")
+}
+processResources.dependsOn(cpRes)
+
 dependencies {
     implementation "com.itextpdf:itext7-core:7.1.13"
     //低版本可以共存

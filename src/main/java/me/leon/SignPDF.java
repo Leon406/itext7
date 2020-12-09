@@ -38,7 +38,8 @@ public class SignPDF {
         }
     }
 
-    public static final String ROOT = "E:\\gitrepo\\itext7\\src\\main\\resources";
+    public static final String ROOT =  "E:\\gitrepo\\itext7\\src\\main\\resources";
+//    public static final String ROOT = Thread.currentThread().getContextClassLoader().getResource("").getPath();
 
     public static final String KEYSTORE = ROOT + "\\yuanzong.jks";//keystore文件路径
     public static final String TEST = ROOT + "\\test.txt";//keystore文件路径
