@@ -5,6 +5,7 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.StampingProperties;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfDocumentContentParser;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.IPdfTextLocation;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.RegexBasedLocationExtractionStrategy;
@@ -41,9 +42,11 @@ public class SignPDF {
     public static final String ROOT =  "E:\\gitrepo\\itext7\\src\\main\\resources";
 //    public static final String ROOT = Thread.currentThread().getContextClassLoader().getResource("").getPath();
 
-    public static final String KEYSTORE = ROOT + "\\yuanzong.jks";//keystore文件路径
     public static final String TEST = ROOT + "\\test.txt";//keystore文件路径
-    public static final char[] PASSWORD = "yuanzong2016".toCharArray();    // keystore密码
+//    public static final String KEYSTORE = ROOT + "\\yuanzong.jks";//keystore文件路径
+//    public static final char[] PASSWORD = "yuanzong2016".toCharArray();    // keystore密码
+ public static final String KEYSTORE = ROOT + "\\leon.jks";//keystore文件路径
+    public static final char[] PASSWORD = "123456".toCharArray();    // keystore密码
 
     //    public static final String SRC = ROOT + "\\contract.pdf";
     public static final String SRC = ROOT + "\\111.pdf";
@@ -106,12 +109,14 @@ public class SignPDF {
         //创建签章工具PdfSigner ，最后一个boolean参数
         //false的话，pdf文件只允许被签名一次，多次签名，最后一次有效
         //true的话，pdf可以被追加签名，验签工具可以识别出每次签名之后文档是否被修改
-        PdfSigner stamper = new PdfSigner(reader2, os, true);
+        PdfSigner stamper = new PdfSigner(reader2, os, new StampingProperties().useAppendMode());
 
         // 获取数字签章属性对象，设定数字签章的属性
         PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
         appearance.setReason(reason);
         appearance.setLocation(location);
+
+
 
         ImageData img = ImageDataFactory.create(stamperSrc);
         //读取图章图片，这个image是itext包的image
@@ -146,7 +151,7 @@ public class SignPDF {
 
         reader2 = new PdfReader(DEST_TMP);
         os = new FileOutputStream(dest);
-        stamper = new PdfSigner(reader2, os, true);
+        stamper = new PdfSigner(reader2, os, new StampingProperties().useAppendMode());
         // 获取数字签章属性对象，设定数字签章的属性
         appearance = stamper.getSignatureAppearance();
         appearance.setReason(reason);
@@ -172,7 +177,6 @@ public class SignPDF {
     }
 
     public float getProperScale(float width, float height, float targetX, float targetY) {
-
         return Math.max(width / targetX, height / targetY);
     }
 

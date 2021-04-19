@@ -34,6 +34,6 @@ public class ConvertUtil {
         }
 
         // props.setBaseUri(baseResource);
-        HtmlConverter.convertToPdf(new File(ROOT + "/docs.html"), new File(ROOT + "/htmlsim.pdf"), props);
+        HtmlConverter.convertToPdf(new File(ROOT + "/borrow.html"), new File(ROOT + "/htmlsim.pdf"), props);
     }
 }
