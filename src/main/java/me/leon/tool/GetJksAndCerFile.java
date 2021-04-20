@@ -51,7 +51,6 @@ public class GetJksAndCerFile {
                 "/k",
                 "start", // cmd Shell命令
 
-
                 "keytool",
                 "-genkeypair", //表示生成密钥
                 "-alias", //要处理的条目的别名（jks文件别名）

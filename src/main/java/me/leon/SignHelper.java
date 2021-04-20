@@ -4,9 +4,9 @@ import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.layout.element.Image;
-import com.itextpdf.signatures.PdfSignatureAppearance;
-import com.itextpdf.signatures.PdfSigner;
+import com.itextpdf.signatures.*;
 import javafx.util.Pair;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.FileInputStream;
 import java.security.KeyStore;
@@ -59,7 +59,7 @@ public class SignHelper {
         return appearance;
     }
 
-    public static Pair<PrivateKey,Certificate[]> keyStore(String path, char[] pwd) throws Exception {
+    public static Pair<PrivateKey, Certificate[]> keyStore(String path, char[] pwd) throws Exception {
         KeyStore ks = KeyStore.getInstance("JKS");
         ks.load(new FileInputStream(path), pwd);
         String alias = ks.aliases().nextElement();
@@ -68,6 +68,16 @@ public class SignHelper {
 
         return new Pair(pk, chain);
 
+    }
+
+    public static IExternalDigest digest = new BouncyCastleDigest();
+
+    public static void sign(PdfSigner stamper, String keyStorePath, char[] keyStorePwd, String digestAlgorithm) throws Exception {
+
+        Pair<PrivateKey, Certificate[]> keyStore = keyStore(keyStorePath, keyStorePwd);
+        IExternalSignature signature = new PrivateKeySignature(keyStore.getKey(), digestAlgorithm, BouncyCastleProvider.PROVIDER_NAME);
+        stamper.setCertificationLevel(1);
+        stamper.signDetached(digest, signature, keyStore.getValue(), null, null, null, 0, PdfSigner.CryptoStandard.CADES);
     }
 
     public static float getProperScale(float width, float height, float targetX, float targetY) {
