@@ -13,6 +13,7 @@ import com.itextpdf.layout.element.Image;
 import com.itextpdf.signatures.*;
 import com.itextpdf.signatures.PdfSignatureAppearance.RenderingMode;
 import com.itextpdf.signatures.PdfSigner.CryptoStandard;
+import me.leon.tool.Encoding;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.swing.*;

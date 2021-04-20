@@ -1,6 +1,4 @@
-package me.leon;
-
-import com.google.common.io.Resources;
+package me.leon.tool;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
