@@ -17,6 +17,11 @@ import java.util.Map;
 
 import static me.leon.SignPDF.ROOT;
 
+/**
+ * pdf模版功能, 两种实现
+ *  itext5
+ *  itext7
+ */
 public class PdfTemplate {
     public static void main(String[] args) throws Exception {
 

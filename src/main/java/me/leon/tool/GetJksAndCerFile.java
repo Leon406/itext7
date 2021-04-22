@@ -10,13 +10,17 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Enumeration;
 
+/**
+ * 签名生成工具, 仅支持windows
+ */
 public class GetJksAndCerFile {
 
     public static final String KEY_PATH = "D:/leon.jks";
     public static final String CER_PATH = "D:/leon.cer";
 
     public static void main(String[] args) {
-        buildKeyAndSaveToJksFile(String.format(digitNameFmt, digits));
+        String alias = "Lambert";
+        buildKeyAndSaveToJksFile(String.format(digitNameFmt, digits),alias);
         exportCerFile();
         try {
             readJks();
@@ -44,7 +48,7 @@ public class GetJksAndCerFile {
     /**
      * @param digitName CN=(张三), OU=(人民单位), O=(人民组织), L=(广州), ST=(广东), C=(中国)
      */
-    public static void buildKeyAndSaveToJksFile(String digitName) {
+    public static void buildKeyAndSaveToJksFile(String digitName,String alias) {
         String[] command = new String[]{
 
                 "cmd ",
@@ -54,7 +58,7 @@ public class GetJksAndCerFile {
                 "keytool",
                 "-genkeypair", //表示生成密钥
                 "-alias", //要处理的条目的别名（jks文件别名）
-                "sun",
+                alias,
                 "-keyalg", //密钥算法名称(如 RSA DSA（默认是DSA）)
                 "RSA",
 //                "-keysize",//密钥位大小(长度)
@@ -98,10 +102,7 @@ public class GetJksAndCerFile {
                 "123456"
         };
         executeCommand(command);
-
-
     }
-
 
     //读取jks文件获取公、私钥
     public static void readJks() throws Exception {

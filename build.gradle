@@ -21,7 +21,7 @@ task cpRes(type: Copy) {
 processResources.dependsOn(cpRes)
 
 dependencies {
-    implementation "com.itextpdf:itext7-core:7.1.13"
+    implementation "com.itextpdf:itext7-core:7.1.15"
     //低版本可以共存
     implementation "com.itextpdf:itextpdf:5.5.13.2"
     implementation "com.itextpdf:html2pdf:3.0.2"

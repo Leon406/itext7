@@ -9,6 +9,8 @@ import com.itextpdf.kernel.pdf.canvas.parser.listener.IPdfTextLocation;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.RegexBasedLocationExtractionStrategy;
 import com.itextpdf.signatures.*;
 import com.itextpdf.signatures.PdfSigner.CryptoStandard;
+import me.leon.tool.SignHelper;
+import me.leon.tool.SignatureParam;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.FileOutputStream;
@@ -19,6 +21,10 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 签名
+ * 可以签名多个位置, 多个签名
+ */
 public class SignPDF {
     static {
         try {
@@ -40,7 +46,7 @@ public class SignPDF {
     public static final char[] PASSWORD2 = "123456".toCharArray();    // keystore密码
 
     //    public static final String SRC = ROOT + "\\contract22.pdf";
-    public static final String SRC = ROOT + "\\111.pdf";
+    public static final String SRC = ROOT + "\\pdf2sign.pdf";
 
     public static final String DEST = ROOT + "\\contract2.pdf";
     public static final String DEST_TMP = ROOT + "\\tmp.pdf";
@@ -218,11 +224,13 @@ public class SignPDF {
             }
         }
         System.out.println(params);
+        SignatureParam.deleteTmpFile();
         SignPDF app = new SignPDF();
         for (SignatureParam param : params) {
             param.total = count;
             app.signOne(param);
         }
+        SignatureParam.deleteTmpFile();
 
     }
 }

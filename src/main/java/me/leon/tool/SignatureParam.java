@@ -1,6 +1,8 @@
-package me.leon;
+package me.leon.tool;
 
 import com.itextpdf.kernel.geom.Rectangle;
+
+import java.io.File;
 
 import static me.leon.SignPDF.ROOT;
 
@@ -47,6 +49,11 @@ public class SignatureParam {
         return order == total ? dest : order % 2 == 0 ? TMP2 : TMP1;
     }
 
+
+    public static void deleteTmpFile() {
+        System.out.println(TMP1 + "  delete  " + new File(TMP1).delete());
+        System.out.println(TMP2 + "  delete  " +new File(TMP2).delete());
+    }
 
 
     public static void main(String[] args) {

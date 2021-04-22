@@ -1,4 +1,4 @@
-package me.leon;
+package me.leon.tool;
 
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -13,6 +13,9 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
+/**
+ * 签名工具封装
+ */
 public class SignHelper {
 
     public static PdfSignatureAppearance appearance(PdfSigner stamper, String sigPath, int page, Rectangle rectangle,
