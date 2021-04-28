@@ -46,7 +46,8 @@ public class SignPDF {
     public static final char[] PASSWORD2 = "123456".toCharArray();    // keystore密码
 
     //    public static final String SRC = ROOT + "\\contract22.pdf";
-    public static final String SRC = ROOT + "\\pdf2sign.pdf";
+//    public static final String SRC = ROOT + "\\pdf2sign.pdf";
+    public static final String SRC = ROOT + "\\htmlsim.pdf";
 
     public static final String DEST = ROOT + "\\contract2.pdf";
     public static final String DEST_TMP = ROOT + "\\tmp.pdf";

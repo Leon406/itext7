@@ -28,6 +28,7 @@ public class SignHelper {
         float height = image.getImageHeight();
         float width = image.getImageWidth();
         float scale = getProperScale(height, width, 100f, 40f);
+//        scale = 1f;
         PdfSignatureAppearance appearance = stamper.getSignatureAppearance()
                 .setPageNumber(page)
                 .setPageRect(new Rectangle(rectangle.getX(), rectangle.getY(), width / scale, height / scale))
