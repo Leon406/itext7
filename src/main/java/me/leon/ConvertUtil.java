@@ -2,7 +2,6 @@ package me.leon;
 
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.layout.font.FontInfo;
 import com.itextpdf.layout.font.FontProvider;
 import com.itextpdf.text.Document;
@@ -10,7 +9,6 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
@@ -71,8 +69,8 @@ public class ConvertUtil {
     }
 
     private static void pdf2Png() throws Exception {
-        pdf2ImageDemo(ROOT + "/pdf.pdf", ROOT + "/png", 400);
-//        pdf2ImageDemo(ROOT + "/demo2.pdf", ROOT + "/png", 200);
+        pdf2Image(ROOT + "/pdf.pdf", ROOT + "/png", 400);
+//        pdf2Image(ROOT + "/demo2.pdf", ROOT + "/png", 200);
     }
 
     /***
@@ -81,8 +79,8 @@ public class ConvertUtil {
      * @param dstImgFolder 图片存放的文件夹
      * @param dpi 越大转换后越清晰，相对转换速度越慢,一般电脑默认96dpi
      */
-    public static void pdf2ImageDemo(String PdfFilePath,
-                                     String dstImgFolder, int dpi) {
+    public static void pdf2Image(String PdfFilePath,
+                                 String dstImgFolder, int dpi) {
         File file = new File(PdfFilePath);
         PDDocument pdDocument;
         try {
@@ -114,7 +112,7 @@ public class ConvertUtil {
                     File dstFile = new File(imgFilePath.toString());
                     BufferedImage image = renderer.renderImageWithDPI(i, dpi);
 //                    BufferedImage image = renderer.renderImage(i,2f);
-                    ImageIO.write(image, "png", dstFile);// PNG
+                    ImageIO.write(image, "png", dstFile);
                 }
                 System.out.println("PDF文档转PNG图片成功！");
             } else {
