@@ -69,7 +69,7 @@ public class ConvertUtil {
     }
 
     private static void pdf2Png() throws Exception {
-        pdf2Image(ROOT + "/pdf.pdf", ROOT + "/png", 400);
+        pdf2Image(ROOT + "/2.pdf", ROOT + "/png", 216);
 //        pdf2Image(ROOT + "/demo2.pdf", ROOT + "/png", 200);
     }
 

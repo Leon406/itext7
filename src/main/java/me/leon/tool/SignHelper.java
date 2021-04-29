@@ -69,9 +69,7 @@ public class SignHelper {
         String alias = ks.aliases().nextElement();
         PrivateKey pk = (PrivateKey) ks.getKey(alias, pwd);
         Certificate[] chain = ks.getCertificateChain(alias);
-
         return new Pair(pk, chain);
-
     }
 
     public static IExternalDigest digest = new BouncyCastleDigest();
